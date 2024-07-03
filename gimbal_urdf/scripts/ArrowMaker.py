@@ -7,18 +7,11 @@ import geometry_msgs.msg
 from geometry_msgs.msg import Quaternion
 from visualization_msgs.msg import Marker
 from tf2_msgs.msg import TFMessage
-
-rospy.init_node('ArrowMaker')
-tf_subscriber = rospy.Subscriber("/tf2_msgs", TFMessage, queue_size=2)
-
-
 from tf.transformations import *
 
-# q_orig = quaternion_from_euler(0, 0, 0)
-# q_rot = quaternion_from_euler(pi, 0, 0)
-# q_new = quaternion_multiply(q_rot, q_orig)
-# print q_new
 
+rospy.init_node('ArrowMaker')
+# tf_subscriber = rospy.Subscriber("/tf2_msgs", TFMessage, queue_size=2)
 
 class tf_listener:
     def __init__(self, target, source):
@@ -69,7 +62,6 @@ class marker_maker:
         self.marker.pose.orientation = orn
         self.direction_arrow_publisher.publish(self.marker)
 
-
 class target_tracker():
     def __init__(self, target_to_track):
         self.jointlistener = tf_listener('world', '4th_link')
@@ -101,7 +93,7 @@ class target_tracker():
             self.go_yaw -= 2*math.pi
         if self.go_yaw < -math.pi:
             self.go_yaw += 2*math.pi
-        return("just",self.go_yaw*180/math.pi,"degrees to yaw!")
+        return self.go_yaw
 
     def pitch_correction(self):
         self.horiz_dist = math.sqrt(self.x*self.x + self.y*self.y)
@@ -111,7 +103,7 @@ class target_tracker():
             self.go_pitch -= 2*math.pi
         if self.go_pitch < -math.pi:
             self.go_pitch += 2*math.pi
-        return("just",self.go_pitch*180/math.pi,"degrees to pitch!")
+        return self.go_pitch
         
     def roll_correction(self):
         self.plant_rot = self.plant_txn.transform.rotation
@@ -119,10 +111,7 @@ class target_tracker():
         self.plant_roll = self.new_plant_angles[0]
 
         self.go_roll = self.plant_roll - self.roll
-        return("just",self.go_roll*180/math.pi,"degrees to roll!")
-
-
-
+        return self.go_roll 
 
 
 
@@ -136,16 +125,22 @@ def make_pointing_arrow():
 
 
 
+def make_direction_correction():
+    sage_tracker = target_tracker('sagebrush')
+    print("just", sage_tracker.yaw_correction()*180/math.pi, "degrees to yaw")
+    print("just", sage_tracker.pitch_correction()*180/math.pi, "degrees to pitch")
+    print("just", sage_tracker.roll_correction()*180/math.pi, "degrees to roll")
+    print("-----------------")
+    # newQuat = quaternion_from_euler(sage_tracker.roll_correction, sage_tracker.pitch_correction, sage_tracker.yaw_correction)
+    # moveit = tf2_ros.transform_broadcaster.TransformBroadcaster() 
+
+    # moveit.sendTransform()
 
 
-rate = rospy.Rate(50)
 
 while not rospy.is_shutdown():
+    rate = rospy.Rate(50)
     make_pointing_arrow()
-    sage_tracker = target_tracker('sagebrush')
-    print(sage_tracker.yaw_correction())
-    print(sage_tracker.pitch_correction())
-    print(sage_tracker.roll_correction())
-    print("-----------------")
+    make_direction_correction()
     rate.sleep()
     
