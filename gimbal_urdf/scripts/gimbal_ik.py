@@ -286,7 +286,7 @@ class AppForm(QMainWindow):
             L2 = 0.5
             L3 = 0.25
 
-            Home_T = np.concatenate((np.concatenate((np.eye(3), np.array([[L1+L2+L3], [0], [0]])), axis=1), \
+            Home_T = np.concatenate((np.concatenate((np.eye(3), np.array([[(L2+L3)], [0], [-L1]])), axis=1), \
                                      np.array([[0, 0, 0, 1]])), axis=0)
             # skew axis for joint 1
             S1 = np.concatenate((np.array([[0], [0], [1]]), \
