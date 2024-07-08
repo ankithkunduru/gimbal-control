@@ -368,7 +368,7 @@ class AppForm(QMainWindow):
 
             # links
             L1_point0 = np.array([[0], [0], [0]])
-            L1_point1 = np.array([[+L1], [0], [0]])
+            L1_point1 = np.array([[0], [0], [-L1]])
             L1_point0_transformed = j1_T.dot(np.concatenate((L1_point0, np.array([[1]])), axis=0))
             L1_point1_transformed = j1_T.dot(np.concatenate((L1_point1, np.array([[1]])), axis=0))
             L1_x = [L1_point0_transformed[0][0], L1_point1_transformed[0][0]]
@@ -377,7 +377,7 @@ class AppForm(QMainWindow):
             self.axes.plot(L1_x, L1_y, L1_z, color=(0,0,0,1.0), linewidth=3.5)
 
             L2_point0 = np.array([[0], [0], [0]])
-            L2_point1 = np.array([[-L2 -(np.deg2rad(self.val_theta_2)/np.pi)], [0], [0]])
+            L2_point1 = np.array([[L2], [0], [0]])
             L2_point0_transformed = j2_T.dot(np.concatenate((L2_point0, np.array([[1]])), axis=0))
             L2_point1_transformed = j2_T.dot(np.concatenate((L2_point1, np.array([[1]])), axis=0))
             L2_x = [L2_point0_transformed[0][0], L2_point1_transformed[0][0]]
