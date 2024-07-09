@@ -87,6 +87,13 @@ class target_tracker():
         self.y = self.plant_pos.y - self.joint_pos.y
         self.z = self.plant_pos.z - self.joint_pos.z
 
+    def __str__(self):
+        self.whattoprint = ("just " + str(self.yaw_correction()*180/math.pi) + " degrees to yaw" + '\n' + \
+                            "just " + str(self.pitch_correction()*180/math.pi) + " degrees to pitch" + '\n' + \
+                            "just " + str(self.roll_correction()*180/math.pi) + " degrees to roll" + '\n' + \
+                            "-----------------")
+        return self.whattoprint
+
     def yaw_correction(self):
         self.go_yaw = math.atan2(self.y, self.x) - self.yaw
         if self.go_yaw > math.pi:
@@ -96,7 +103,7 @@ class target_tracker():
         return self.go_yaw
 
     def pitch_correction(self):
-        self.horiz_dist = math.sqrt(self.x*self.x + self.y*self.y)
+        self.horiz_dist = math.sqrt(self.x**2 + self.y**2)
         self.pitch *= -1 #I don't know why but pitch measurements are weird
         self.go_pitch = math.atan2(self.z, self.horiz_dist) - self.pitch
         if self.go_pitch > math.pi:
@@ -112,10 +119,12 @@ class target_tracker():
 
         self.go_roll = self.plant_roll - self.roll
         return self.go_roll 
+    
 
 
 
-def make_pointing_arrow():
+
+def make_arrow1():
     arrow1 = marker_maker()
     arrowlistener = tf_listener('world', '4th_link')
     txn = arrowlistener.listen()
@@ -124,23 +133,12 @@ def make_pointing_arrow():
         arrow1.publish(txn.transform.translation, txn.transform.rotation)
 
 
-
-def make_direction_correction():
-    sage_tracker = target_tracker('sagebrush')
-    print("just", sage_tracker.yaw_correction()*180/math.pi, "degrees to yaw")
-    print("just", sage_tracker.pitch_correction()*180/math.pi, "degrees to pitch")
-    print("just", sage_tracker.roll_correction()*180/math.pi, "degrees to roll")
-    print("-----------------")
-    # newQuat = quaternion_from_euler(sage_tracker.roll_correction, sage_tracker.pitch_correction, sage_tracker.yaw_correction)
-    # moveit = tf2_ros.transform_broadcaster.TransformBroadcaster() 
-
-    # moveit.sendTransform()
-
-
-
 while not rospy.is_shutdown():
     rate = rospy.Rate(50)
-    make_pointing_arrow()
-    make_direction_correction()
+    
+    make_arrow1()                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    sage_tracker = target_tracker('sagebrush')
+    print(sage_tracker)
+    
     rate.sleep()
     
