@@ -286,14 +286,16 @@ class AppForm(QMainWindow):
             L2 = 0.5
             L3 = 0.25
 
+            # Distance from home to the end effector
             Home_T = np.concatenate((np.concatenate((np.eye(3), np.array([[(L2+L3)], [0], [-L1]])), axis=1), \
                                      np.array([[0, 0, 0, 1]])), axis=0)
-            # skew axis for joint 1
+            # skew axis for joint 1 relative to home frame
             S1 = np.concatenate((np.array([[0], [0], [1]]), \
                                  np.cross(-np.array([[0], [0], [1]]) , np.array([[-L3 - L2], [0], [L1]]), axis=0)), axis=0)
+            # skew axis for joint 2 relative to home frame
             S2 = np.concatenate((np.array([[0], [1], [0]]), \
                                  np.cross(-np.array([[0], [1], [0]]) , np.array([[-L3-L2], [0], [0]]), axis=0)), axis=0)
-            
+            # skew axis for joint 3 relative to home frame
             S3 = np.concatenate((np.array([[1], [0], [0]]), \
                                  np.cross(-np.array([[1], [0], [0]]) , np.array([[-(L3)], [0], [0]]), axis=0)), axis=0)
 
@@ -307,7 +309,8 @@ class AppForm(QMainWindow):
             # Joint 1
             Home_j1 = np.concatenate((np.concatenate((np.eye(3), np.array([[(0)], [0], [0]])), axis=1), \
                                       np.array([[0, 0, 0, 1]])), axis=0)
-             
+            
+            #skew axis S1 defined relative to joint 1
             j1_S1 = np.concatenate((np.array([[0], [0], [1]]), \
                                     np.cross(-np.array([[0], [0], [1]]) , np.array([[-(0)], [0], [0]]), axis=0)), axis=0)
            
@@ -318,7 +321,7 @@ class AppForm(QMainWindow):
             # Joint 2
             Home_j2 = np.concatenate((np.concatenate((np.eye(3), np.array([[0], [0], [-L1]])), axis=1), \
                                       np.array([[0, 0, 0, 1]])), axis=0)
-
+            #skew axes S1 and S2 defined relative to joint 2
             j2_S1 = np.concatenate((np.array([[0], [0], [1]]), \
                                     np.cross(-np.array([[0], [0], [1]]) , np.array([[0], [0], [L1]]), axis=0)), axis=0)
             j2_S2 = np.concatenate((np.array([[0], [1], [0]]), \
@@ -331,7 +334,7 @@ class AppForm(QMainWindow):
             # Joint 3
             Home_j3 = np.concatenate((np.concatenate((np.eye(3), np.array([[L2], [0], [-L1]])), axis=1), \
                                       np.array([[0, 0, 0, 1]])), axis=0)
-
+            #skew axes S1, S2, and S3 defined relative to joint 3
             j3_S1 = np.concatenate((np.array([[0], [0], [1]]), \
                                     np.cross(-np.array([[0], [0], [1]]) , np.array([[-L2], [0], [L1]]), axis=0)), axis=0)
             j3_S2 = np.concatenate((np.array([[0], [1], [0]]), \
@@ -519,6 +522,7 @@ class AppForm(QMainWindow):
             self.sld_theta_3.setValue(self.val_theta_3)
             self.sld_theta_3.blockSignals(False)
 
+
         if self.scenario == 2:
             # Goal transformation (Body Frame-based)
             G_p_zyx = np.array([[self.val_pos_x], \
@@ -610,6 +614,7 @@ class AppForm(QMainWindow):
                 self.sld_theta_3.blockSignals(True)
                 self.sld_theta_3.setValue(self.val_theta_3)
                 self.sld_theta_3.blockSignals(False)
+                print("t1 = {}, t2 = {},t3 = {},".format(self.val_theta_1, self.val_theta_2, self.val_theta_3))
 
         if self.scenario == 3 or self.scenario == 4 or self.scenario == 5:
             # 6-Joint SE(3)
