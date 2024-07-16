@@ -209,10 +209,10 @@ class AppForm():
 
 
         if self.scenario == 0 or self.scenario == 1 or self.scenario == 2:
-            # 3-Joint SE(2)
-            L1 = 0.75
-            L2 = 0.5
-            L3 = 0.25
+            # lengths calculated by trial and error
+            L1 = 0.04
+            L2 = 0.55
+            L3 = 0.1
 
             # Distance from home to the end effector
             Home_T = np.concatenate((np.concatenate((np.eye(3), np.array([[(L2+L3)], [0], [-L1]])), axis=1), \
@@ -473,7 +473,7 @@ class AppForm():
                 js.header.stamp = rospy.Time.now()
                 js.name = ['1st_to_base', '2nd_to_1st', '3rd_to_2nd']
 
-                js.position = [math.pi + np.deg2rad(self.val_theta_1), np.deg2rad(self.val_theta_2), math.pi + np.deg2rad(self.val_theta_3)]
+                js.position = [(math.pi + np.deg2rad(self.val_theta_1)), np.deg2rad(self.val_theta_2), np.deg2rad(self.val_theta_3)]
                 js.velocity = [0.005, 0.005, 0.005]
                 js.effort = [0.05, 0.05, 0.05]
                 
