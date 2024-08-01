@@ -15,6 +15,14 @@ from tf.transformations import *
 rospy.init_node('ArrowMaker')
 # tf_subscriber = rospy.Subscriber("/tf2_msgs", TFMessage, queue_size=2)
 
+
+def vec_length(vector):
+    sum = 0
+    for term in vector:
+        sum += term**2
+    return np.sqrt(sum)
+
+
 class tf_listener:
     def __init__(self):
         self.tfBuffer = tf2_ros.Buffer()
@@ -64,16 +72,10 @@ class tf_listener:
 class target_tracker():
     def __init__(self, target_to_track):
         self._tf_listener = tf_listener()
-        self.joint_txn = self._tf_listener.listen('base_link', '3rd_link')
-        # if self.joint_txn is not None:
-        #     self.joint_rotations = self.joint_txn.transform.rotation
-        #     self.newangles = euler_from_quaternion([self.joint_rotations.x, self.joint_rotations.y, self.joint_rotations.z, self.joint_rotations.w])
-        #     self.roll = self.newangles[0]
-        #     self.pitch = self.newangles[1]
-        #     self.yaw = self.newangles[2]
-            
-
+        
+        self.joint_txn = self._tf_listener.listen('base_link', 'EE')
         self.plant_txn = self._tf_listener.listen('base_link', target_to_track)
+
         if self.plant_txn is not None and self.joint_txn is not None:
             self.plant_pos = self.plant_txn.transform.translation
             self.joint_pos = self.joint_txn.transform.translation
@@ -125,8 +127,8 @@ class target_tracker():
     
     
 # ------------ IMPORTANT PART BELOW ------------------------
-
-
+    
+    
     def pose_maker(self): 
         
         self.txn = self._tf_listener.listen('base_link', '3rd_link')
@@ -135,19 +137,29 @@ class target_tracker():
         self.prev_z_rot = self.txn.transform.rotation.z
         
         if self.plant_txn is not None and self.joint_txn is not None:
-
-            #Calculating quaternion 
-            vec_mag = math.sqrt(self.x**2 + self.y**2 + self.z**2)
             
-            #arccos of the dot product between current rotation and desired rotation
-            theta = math.acos(((self.prev_x_rot*self.x)/vec_mag) + ((self.prev_y_rot*self.y)/vec_mag) + ((self.prev_z_rot*self.z)/vec_mag)) 
+            #use self.x y z as a vector and find a rotation quaternion that moves the x-axis to point in the same direction as that vector
 
-            self.quatw = math.cos(theta/2)
-            self.quatx =    ((self.prev_y_rot*self.z/vec_mag) - (self.prev_z_rot*self.y/vec_mag)) * math.sin(theta/2)
-            self.quaty = -1*((self.prev_x_rot*self.z/vec_mag) - (self.prev_z_rot*self.x/vec_mag)) * math.sin(theta/2)
-            self.quatz =    ((self.prev_x_rot*self.y/vec_mag) - (self.prev_y_rot*self.x/vec_mag)) * math.sin(theta/2)
+            self.currentdirection = [1,0,0]
+            self.goaldirection = [self.x, self.y, self.z]
 
-            return [self.x, self.y, self.z, self.quatx, self.quaty, self.quatz, self.quatw]
+            self.length_goaldirection = vec_length(self.goaldirection)
+            self.length_currentdirection = vec_length(self.currentdirection)
+
+            self.crossedvectors = np.cross(self.currentdirection, self.goaldirection)
+            self.quatx = self.crossedvectors[0]
+            self.quaty = self.crossedvectors[1]
+            self.quatz = self.crossedvectors[2]
+            self.quatw = np.sqrt((self.length_currentdirection**2) * (self.length_goaldirection**2)) + np.dot(self.currentdirection, self.goaldirection)
+
+            #normalizing quaternion
+            self.quatmag = self.quatx**2 + self.quaty**2 + self.quatz**2 + self.quatw**2
+            self.qx = self.quatx/self.quatmag
+            self.qy = self.quaty/self.quatmag
+            self.qz = self.quatz/self.quatmag
+            self.qw = self.quatw/self.quatmag
+
+            return [self.plant_pos.x, self.plant_pos.y, self.plant_pos.z, self.qx, self.qy, self.qz, self.qw]
         else:
             return None
 
