@@ -174,7 +174,7 @@ class target_tracker():
 
         arrowpos = Vector3()
         arrowpos.x = txn.transform.translation.x
-        arrowpos.y = txn.transform.translation.y + 0.08
+        arrowpos.y = txn.transform.translation.y
         arrowpos.z = txn.transform.translation.z
 
         if txn is not None:
