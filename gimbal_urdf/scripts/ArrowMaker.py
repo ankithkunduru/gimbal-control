@@ -77,15 +77,15 @@ class tf_listener:
 
 class marker_maker:
 
-    def __init__(self):
-        self.direction_arrow_publisher = rospy.Publisher("/visualization_marker", Marker, queue_size=2)
+    def __init__(self, topic):
+        self.direction_arrow_publisher = rospy.Publisher(topic, Marker, queue_size=2)
         self.marker = Marker()
 
         self.marker.header.frame_id = "/world"
         self.marker.header.stamp = rospy.Time.now()
         self.marker.type = 0
         self.marker.id = 0
-        self.marker.scale.x = 10
+        self.marker.scale.x = 8
         self.marker.scale.y = 0.015
         self.marker.scale.z = 0.015
         self.marker.color.r = 0.0
@@ -159,7 +159,7 @@ class target_tracker():
     
 
     def make_arrow1(self):
-        arrow1 = marker_maker()
+        arrow1 = marker_maker("/visualization_marker")
         txn = self._tf_listener.listen('world', 'EE')
 
         #quaternion rotation of 90 degrees along z axis
@@ -177,8 +177,22 @@ class target_tracker():
         arrowpos.y = txn.transform.translation.y
         arrowpos.z = txn.transform.translation.z
 
+
+        #Vector that is being published to inverse kinematics
+        arrow2 = marker_maker("/target_marker")
+        sage_tracker = target_tracker('sagebrush')
+        targ_rot = Quaternion()
+        sagepose = sage_tracker.pose_maker()
+        targ_rot.x = sagepose[3]
+        targ_rot.y = sagepose[4]
+        targ_rot.z = sagepose[5]
+        targ_rot.w = sagepose[6]
+
+
         if txn is not None:
             arrow1.publish(arrowpos, arrowrot)
+            arrow2.marker.color.g = 0
+            arrow2.publish(arrowpos, targ_rot)
     
     
 # ------------ IMPORTANT PART BELOW ------------------------
@@ -194,7 +208,7 @@ class target_tracker():
         if self.plant_txn is not None and self.joint_txn is not None:
             
             #Rotating the plant pose so that its currentdirection-axis faces in the same direction we want the gimbal to point
-            self.currentdirection = [0,1,0]
+            self.currentdirection = [1, 0, 0]
             self.goaldirection = [self.x, self.y, self.z]
 
             self.length_goaldirection = vec_length(self.goaldirection)
