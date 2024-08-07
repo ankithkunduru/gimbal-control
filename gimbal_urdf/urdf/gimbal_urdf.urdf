@@ -4,6 +4,10 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
   name="gimbal_urdf">
+  
+   <link name="world"/>
+  
+  
   <link
     name="base_link">
     <inertial>
@@ -44,6 +48,20 @@
       </geometry>
     </collision>
   </link>
+
+
+  <joint name="base_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="-0 0 3.14"/>
+        <parent link="world"/>
+        <child link="base_link"/>
+        <calibration rising="0.0"/>
+        <dynamics damping="0.0" friction="0.0"/>
+        <limit lower="-3.14" upper="3.14" effort="30" velocity="1.0"/>
+        
+    </joint>
+
+
+
   <link
     name="1st_link">
     <inertial>
