@@ -105,6 +105,7 @@ class RigidBodyDynamics:
             V = np.eye(3);
         else:
             sin_theta = np.sqrt(1.0-cos_theta**2)
+            # print("sin theta = ",sin_theta)
             theta = np.arccos(cos_theta)
             ln_R = (theta / (2*sin_theta)) * (R - np.transpose(R))
             omega = RigidBodyDynamics.Vee(ln_R)
@@ -201,31 +202,33 @@ class AppForm():
 
         self.val_pos_z = self.prev_pose_goal.position.z
 
-        self.val_rot_x = self.prev_pose_goal.orientation.x
+        euler = euler_from_quaternion([self.prev_pose_goal.orientation.x,
+                                       self.prev_pose_goal.orientation.y,
+                                       self.prev_pose_goal.orientation.z,
+                                       self.prev_pose_goal.orientation.w,])
+        # print("euler = {}".format(euler))
 
-        self.val_rot_y = self.prev_pose_goal.orientation.y 
-
-        self.val_rot_z = self.prev_pose_goal.orientation.z 
+        self.val_rot_x, self.val_rot_y, self.val_rot_z = euler
 
     def fk_ik_loop(self):
         if self.scenario == 0 or self.scenario == 1 or self.scenario == 2:
             # lengths calculated by trial and error
-            L1 = 0.05
-            L2 = 0.08
-            L3 = 0.5
+            L1 = 0.1
+            L2 = 0.02
+            L3 = 0.02
 
             # Distance from home to the end effector
-            Home_T = np.concatenate((np.concatenate((np.eye(3), np.array([[(L2)], [L3], [-L1]])), axis=1), \
+            Home_T = np.concatenate((np.concatenate((np.eye(3), np.array([[(-L3)], [L2], [-L1]])), axis=1), \
                                      np.array([[0, 0, 0, 1]])), axis=0)
             # skew axis for joint 1 relative to home frame
-            S1 = np.concatenate((np.array([[0], [0], [1]]), \
-                                 np.cross(-np.array([[0], [0], [1]]) , np.array([[-L2], [-L3], [L1]]), axis=0)), axis=0)
+            S1 = np.concatenate((np.array([[0], [0], [-1]]), \
+                                 np.cross(-np.array([[0], [0], [-1]]) , np.array([[L3], [-L2], [L1]]), axis=0)), axis=0)
             # skew axis for joint 2 relative to home frame
-            S2 = np.concatenate((np.array([[1], [0], [0]]), \
-                                 np.cross(-np.array([[1], [0], [0]]) , np.array([[-L2], [-L3], [0]]), axis=0)), axis=0)
+            S2 = np.concatenate((np.array([[0], [1], [0]]), \
+                                 np.cross(-np.array([[0], [1], [0]]) , np.array([[L3], [-L2], [0]]), axis=0)), axis=0)
             # skew axis for joint 3 relative to home frame
-            S3 = np.concatenate((np.array([[0], [1], [0]]), \
-                                 np.cross(-np.array([[0], [1], [0]]) , np.array([[0], [-L3], [0]]), axis=0)), axis=0)
+            S3 = np.concatenate((np.array([[-1], [0], [0]]), \
+                                 np.cross(-np.array([[-1], [0], [0]]) , np.array([[L3], [0], [0]]), axis=0)), axis=0)
 
             e_S1Matrix_theta1 = RigidBodyDynamics.ExpMap(S1, self.val_theta_1)
             e_S2Matrix_theta2 = RigidBodyDynamics.ExpMap(S2, self.val_theta_2)
@@ -246,7 +249,7 @@ class AppForm():
             out_pose.pose.orientation.z = out_quat[2]
             out_pose.pose.orientation.w = out_quat[3]
             out_pose.header.stamp = rospy.Time.now()
-            out_pose.header.frame_id = '4th_link'
+            out_pose.header.frame_id = 'EE'
             if self.scenario == 0:
                 self.ee_joint_pub.publish(out_pose)
 
@@ -257,8 +260,8 @@ class AppForm():
                                       np.array([[0, 0, 0, 1]])), axis=0)
             
             #skew axis S1 defined relative to joint 1
-            j1_S1 = np.concatenate((np.array([[0], [0], [1]]), \
-                                    np.cross(-np.array([[0], [0], [1]]) , np.array([[-(0)], [0], [0]]), axis=0)), axis=0)
+            j1_S1 = np.concatenate((np.array([[0], [0], [-1]]), \
+                                    np.cross(-np.array([[0], [0], [-1]]) , np.array([[-(0)], [0], [0]]), axis=0)), axis=0)
            
             e_j1S1Matrix_theta1 = RigidBodyDynamics.ExpMap(j1_S1, self.val_theta_1)
 
@@ -268,25 +271,25 @@ class AppForm():
             Home_j2 = np.concatenate((np.concatenate((np.eye(3), np.array([[0], [0], [-L1]])), axis=1), \
                                       np.array([[0, 0, 0, 1]])), axis=0)
             #skew axes S1 and S2 defined relative to joint 2
-            j2_S1 = np.concatenate((np.array([[0], [0], [1]]), \
-                                    np.cross(-np.array([[0], [0], [1]]) , np.array([[0], [0], [L1]]), axis=0)), axis=0)
-            j2_S2 = np.concatenate((np.array([[1], [0], [0]]), \
-                                    np.cross(-np.array([[1], [0], [0]]) , np.array([[0], [0], [0]]), axis=0)), axis=0)
+            j2_S1 = np.concatenate((np.array([[0], [0], [-1]]), \
+                                    np.cross(-np.array([[0], [0], [-1]]) , np.array([[0], [0], [L1]]), axis=0)), axis=0)
+            j2_S2 = np.concatenate((np.array([[0], [1], [0]]), \
+                                    np.cross(-np.array([[0], [1], [0]]) , np.array([[0], [0], [0]]), axis=0)), axis=0)
             e_j2S1Matrix_theta1 = RigidBodyDynamics.ExpMap(j2_S1, self.val_theta_1)
             e_j2S2Matrix_theta2 = RigidBodyDynamics.ExpMap(j2_S2, self.val_theta_2)
   
             j2_T = (Home_j2.dot(e_j2S1Matrix_theta1)).dot(e_j2S2Matrix_theta2)  # Post-multiply
             
             # Joint 3
-            Home_j3 = np.concatenate((np.concatenate((np.eye(3), np.array([[L2], [0], [-L1]])), axis=1), \
+            Home_j3 = np.concatenate((np.concatenate((np.eye(3), np.array([[0], [L2], [-L1]])), axis=1), \
                                       np.array([[0, 0, 0, 1]])), axis=0)
             #skew axes S1, S2, and S3 defined relative to joint 3
-            j3_S1 = np.concatenate((np.array([[0], [0], [1]]), \
-                                    np.cross(-np.array([[0], [0], [1]]) , np.array([[-L2], [0], [L1]]), axis=0)), axis=0)
-            j3_S2 = np.concatenate((np.array([[1], [0], [0]]), \
-                                    np.cross(-np.array([[1], [0], [0]]) , np.array([[-L2], [0], [0]]), axis=0)), axis=0)
-            j3_S3 = np.concatenate((np.array([[0], [1], [0]]), \
-                                    np.cross(-np.array([[0], [1], [0]]) , np.array([[-(0)], [0], [0]]), axis=0)), axis=0)     
+            j3_S1 = np.concatenate((np.array([[0], [0], [-1]]), \
+                                    np.cross(-np.array([[0], [0], [-1]]) , np.array([[0], [-L2], [L1]]), axis=0)), axis=0)
+            j3_S2 = np.concatenate((np.array([[0], [1], [0]]), \
+                                    np.cross(-np.array([[0], [1], [0]]) , np.array([[0], [-L2], [0]]), axis=0)), axis=0)
+            j3_S3 = np.concatenate((np.array([[-1], [0], [0]]), \
+                                    np.cross(-np.array([[-1], [0], [0]]) , np.array([[0], [0], [0]]), axis=0)), axis=0)     
 
             e_j3S1Matrix_theta1 = RigidBodyDynamics.ExpMap(j3_S1, self.val_theta_1)
             e_j3S2Matrix_theta2 = RigidBodyDynamics.ExpMap(j3_S2, self.val_theta_2)
@@ -338,24 +341,24 @@ class AppForm():
 
             # revolute
             self.val_theta_1 = self.val_theta_1 + np.rad2deg(Joints_vel[0]) * 0.1
-            if self.val_theta_1 > 180.0:
-                self.val_theta_1 = 180.0
-            elif self.val_theta_1 < -180.0:
-                self.val_theta_1 = -180.0
+            # if self.val_theta_1 > 180.0:
+            #     self.val_theta_1 = 180.0
+            # elif self.val_theta_1 < -180.0:
+            #     self.val_theta_1 = -180.0
 
             # revolute
             self.val_theta_2 = self.val_theta_2 + np.rad2deg(Joints_vel[1]) * 0.1
-            if self.val_theta_2 > 180.0:
-                self.val_theta_2 = 180.0
-            elif self.val_theta_2 < -180.0:
-                self.val_theta_2 = -180.0
+            # if self.val_theta_2 > 180.0:
+            #     self.val_theta_2 = 180.0
+            # elif self.val_theta_2 < -180.0:
+            #     self.val_theta_2 = -180.0
 
             # wrap: revolute
             self.val_theta_3 = self.val_theta_3 + np.rad2deg(Joints_vel[2]) * 0.1
-            if self.val_theta_3 > 180.0:
-                self.val_theta_3 = 180.0
-            elif self.val_theta_3 < -180.0:
-                self.val_theta_3 = -180.0
+            # if self.val_theta_3 > 180.0:
+            #     self.val_theta_3 = 180.0
+            # elif self.val_theta_3 < -180.0:
+            #     self.val_theta_3 = -180.0
 
 
 
@@ -370,6 +373,9 @@ class AppForm():
             angle_z = (self.val_rot_z)
             angle_y = (self.val_rot_y)
             angle_x = (self.val_rot_x)
+
+            print("ip pos, x = {},y = {},z = {}".format(self.val_pos_x, self.val_pos_y, self.val_pos_z))
+            print("ip rot, x = {},y = {},z = {}".format(self.val_rot_x, self.val_rot_y, self.val_rot_z))
 
             G_R_z = np.array([[np.cos(angle_z), -np.sin(angle_z), 0], \
                               [np.sin(angle_z),  np.cos(angle_z), 0], \
@@ -411,24 +417,24 @@ class AppForm():
 
                 # revolute
                 self.val_theta_1 = self.val_theta_1 + np.rad2deg(Joints_vel[0]) * 0.1
-                if self.val_theta_1 > 360.0:
-                    self.val_theta_1 = 360.0
-                elif self.val_theta_1 < -360.0:
-                    self.val_theta_1 = -360.0
+                # if self.val_theta_1 > 360.0:
+                #     self.val_theta_1 = 360.0
+                # elif self.val_theta_1 < -360.0:
+                #     self.val_theta_1 = -360.0
 
                 # revolute
                 self.val_theta_2 = self.val_theta_2 + np.rad2deg(Joints_vel[1]) * 0.1
-                if self.val_theta_2 > 170.0:
-                    self.val_theta_2 = 170.0
-                elif self.val_theta_2 < -170.0:
-                    self.val_theta_2 = -170.0
+                # if self.val_theta_2 > 170.0:
+                #     self.val_theta_2 = 170.0
+                # elif self.val_theta_2 < -170.0:
+                #     self.val_theta_2 = -170.0
 
                 # revolute
                 self.val_theta_3 = self.val_theta_3 + np.rad2deg(Joints_vel[2]) * 0.1
-                if self.val_theta_3 > 180.0:
-                    self.val_theta_3 = 180.0
-                elif self.val_theta_3 < -180.0:
-                    self.val_theta_3 = -180.0
+                # if self.val_theta_3 > 180.0:
+                #     self.val_theta_3 = 180.0
+                # elif self.val_theta_3 < -180.0:
+                #     self.val_theta_3 = -180.0
 
                 print("t1 = {}, t2 = {},t3 = {},".format(self.val_theta_1, self.val_theta_2, self.val_theta_3)) #Outputs
 
@@ -439,7 +445,7 @@ class AppForm():
                 js.name = ['1st_to_base', '2nd_to_1st', '3rd_to_2nd']
 
                 self.yawjoint = np.deg2rad(self.val_theta_1)
-                self.rolljoint = np.deg2rad(self.val_theta_2)
+                self.rolljoint = np.deg2rad(self.val_theta_2) 
                 self.pitchjoint = np.deg2rad(self.val_theta_3)
 
                 js.position = [self.yawjoint, self.rolljoint, self.pitchjoint]
