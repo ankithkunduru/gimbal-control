@@ -10,7 +10,7 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gimbal_urdf)/urdf.rviz" />
 
     <!-- reference object -->
-  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="-1 -1 0.533 0 0 1 0 base_link sagebrush 100" />
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="1 1 -1 0 0 1 0 base_link sagebrush 100" />
 
 
 </launch>
