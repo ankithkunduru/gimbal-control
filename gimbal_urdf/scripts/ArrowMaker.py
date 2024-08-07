@@ -108,7 +108,7 @@ class marker_maker:
         self.marker.pose.orientation = orn
         self.direction_arrow_publisher.publish(self.marker)
 
-class target_tracker():
+class target_tracker:
     def __init__(self, target_to_track):
         self._tf_listener = tf_listener()
         
@@ -124,41 +124,8 @@ class target_tracker():
             self.y = self.plant_pos.y - self.joint_pos.y
             self.z = self.plant_pos.z - self.joint_pos.z
 
-    # def __str__(self):
-    #     self.whattoprint = ("just " + str(self.yaw_correction()*180/math.pi) + " degrees to yaw" + '\n' + \
-    #                         "just " + str(self.pitch_correction()*180/math.pi) + " degrees to pitch" + '\n' + \
-    #                         "just " + str(self.roll_correction()*180/math.pi) + " degrees to roll" + '\n' + \
-    #                         "-----------------")
-    #     return self.whattoprint
+    def make_arrow(self): # ---- MAKES VISUALS ----
 
-    # def yaw_correction(self):
-    #     self.go_yaw = math.atan2(self.y, self.x) - self.yaw
-    #     if self.go_yaw > math.pi:
-    #         self.go_yaw -= 2*math.pi
-    #     if self.go_yaw < -math.pi:
-    #         self.go_yaw += 2*math.pi
-    #     return self.go_yaw
-
-    # def pitch_correction(self):
-    #     self.horiz_dist = math.sqrt(self.x**2 + self.y**2)
-    #     self.pitch *= -1 #I don't know why but pitch measurements are weird
-    #     self.go_pitch = math.atan2(self.z, self.horiz_dist) - self.pitch
-    #     if self.go_pitch > math.pi:
-    #         self.go_pitch -= 2*math.pi
-    #     if self.go_pitch < -math.pi:
-    #         self.go_pitch += 2*math.pi
-    #     return self.go_pitch
-        
-    # def roll_correction(self):
-    #     self.plant_rot = self.plant_txn.transform.rotation
-    #     self.new_plant_angles = euler_from_quaternion([self.plant_rot.x, self.plant_rot.y, self.plant_rot.z, self.plant_rot.w])
-    #     self.plant_roll = self.new_plant_angles[0]
-
-    #     self.go_roll = self.plant_roll - self.roll
-    #     return self.go_roll 
-    
-
-    def make_arrow1(self):
         arrow1 = marker_maker("/visualization_marker")
         txn = self._tf_listener.listen('world', 'EE')
 
@@ -183,10 +150,7 @@ class target_tracker():
         sage_tracker = target_tracker('sagebrush')
         targ_rot = Quaternion()
         sagepose = sage_tracker.pose_maker()
-        targ_rot.x = sagepose[3]
-        targ_rot.y = sagepose[4]
-        targ_rot.z = sagepose[5]
-        targ_rot.w = sagepose[6]
+        targ_rot = sagepose.orientation
 
 
         if txn is not None:
@@ -194,11 +158,8 @@ class target_tracker():
             arrow2.marker.color.g = 0
             arrow2.publish(arrowpos, targ_rot)
     
-    
-# ------------ IMPORTANT PART BELOW ------------------------
-    
-    
-    def pose_maker(self): 
+
+    def pose_maker(self): # ---- CREATES GOAL VECTOR ----
         
         self.txn = self._tf_listener.listen('world', 'EE')
         self.prev_x_rot = self.txn.transform.rotation.x
@@ -227,7 +188,14 @@ class target_tracker():
             self.qz = self.quatz/self.quatmag
             self.qw = self.quatw/self.quatmag
 
-            return [self.plant_pos.x, self.plant_pos.y, self.plant_pos.z, self.qx, self.qy, self.qz, self.qw]
+            self.pose_output = Pose()
+            self.pose_output.position = self.plant_pos
+            self.pose_output.orientation.x = self.qx
+            self.pose_output.orientation.y = self.qy
+            self.pose_output.orientation.z = self.qz
+            self.pose_output.orientation.w = self.qw
+
+            return self.pose_output
         else:
             return None
 
@@ -235,31 +203,24 @@ class target_tracker():
 def publish_plant_pose():
     sage_tracker = target_tracker('sagebrush')
     # print(sage_tracker)
-    # sage_tracker.make_arrow1()
+    # sage_tracker.make_arrow()
     pub = rospy.Publisher('target_pose', PoseStamped, queue_size=10)
     listsagepose = sage_tracker.pose_maker()
     if listsagepose is not None:
-        sagepose = Pose()
-        sagepose.position.x = listsagepose[0]
-        sagepose.position.y = listsagepose[1]
-        sagepose.position.z = listsagepose[2]
-        sagepose.orientation.x = listsagepose[3]
-        sagepose.orientation.y = listsagepose[4]
-        sagepose.orientation.z = listsagepose[5]
-        sagepose.orientation.w = listsagepose[6]
+        sagepose = sage_tracker.pose_maker()
         pub.publish(pose=sagepose)
 
 def publish_directionarrow():
     sage_tracker = target_tracker('sagebrush')
-    sage_tracker.make_arrow1()
+    sage_tracker.make_arrow()
 
 
 if __name__=='__main__':
     print("running")
+    while not rospy.is_shutdown():
+        rate = rospy.Rate(50)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        publish_plant_pose() 
+        publish_directionarrow()
+        rate.sleep()
 
-while not rospy.is_shutdown():
-    rate = rospy.Rate(50)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-    publish_plant_pose() 
-    publish_directionarrow()
-    rate.sleep()
     
