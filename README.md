@@ -58,7 +58,7 @@ Arrowmaker has sentimental value to me because it was the first object-oriented 
 
 Contact info: Ankith Kunduru, 732-809-2244, 1ankithk@gmail.com.
 
-Please message me with any questions on what I did or with any updates of the project. I got very invested in this project and it will be cool to see how it progresses.
+Please message me with ANY PROGRESS with the project. I got very invested in this project and it will be cool to see how it progresses. Also if you have questions I can answer I will.
 
 ## Bonus REU tips
 If you are an REU student working on this:
