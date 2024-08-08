@@ -42,7 +42,7 @@ RQT needs to be running beside this because the sliders in rqt are used to contr
 When you change the x, y, and z positions, slider_joints.py rotates the frame so that the y-axis aligns with gimbal's center. This is because the gimbal's end effector is aligned with the y-axis, and the new_ik script tries to align the end effector's frame with the sagebrush's frame.
 If you run new_ik.py after running this, you should see that the gimbal's joints align with the pose that is moving around. If the pose isn't visible, check if rViz is displaying that topic. If the joints aren't moving, check if slider_joints.py is publishing to 'target_pose', and new_ik.py is subscribing to 'target_pose'. If still not working, make sure new_ik.py is publishing to rViz at all by making sure the joint state publisher has a rosparam of 'ik_joint_states'.
 
-Slider_joints does have a flaw in that it creates the goal pose from an arbitrary point set in the center of where the gimbal rotates. The input coordinates need to be translated into the frame of the end effector and then the sagepose.header.frame_id needs to be changed from 'base_link' to 'EE' (or cam_link, check URDF file). 
+Slider_joints does have a flaw in that it creates the goal pose from an arbitrary point set in the center of where the gimbal rotates. (The arbitrary point is why I included -0.18 in the z value that is read) The input coordinates need to be translated into the frame of the end effector and then the sagepose.header.frame_id needs to be changed from 'base_link' to 'EE' (or cam_link, check URDF file). 
 
 ## Arrowmaker.py
 
