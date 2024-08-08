@@ -20,7 +20,7 @@ The model of the gimbal and its axes are represented by the image on the left, h
 
 ![unnamed](https://github.com/user-attachments/assets/ae26e5b8-e623-4286-a76d-5ad52670444a)
 
-(Left is current URDF configuration, right is what gimbal_ikv2 follows)
+(Left is current URDF configuration, right is what gimbal_ik_copterlab_v2 follows)
 
 
 ## New_IK
