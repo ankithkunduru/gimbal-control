@@ -18,9 +18,9 @@ This URDF file (which may need some tweaking of axes) describes the current gimb
 The model of the gimbal and its axes are represented by the image on the left, however it may work better if the axes were rotated to mimic the diagram on the right.
 
 
+![unnamed](https://github.com/user-attachments/assets/ae26e5b8-e623-4286-a76d-5ad52670444a)
 
-INSERT IMAGE HERE
-
+(Left is current URDF configuration, right is what gimbal_ikv2 follows)
 
 
 ## New_IK
