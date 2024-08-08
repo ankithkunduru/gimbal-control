@@ -18,7 +18,7 @@ This URDF file (which may need some tweaking of axes) describes the current gimb
 The model of the gimbal and its axes are represented by the image on the left, however it may work better if the axes were rotated to mimic the diagram on the right.
 
 
-![unnamed](https://github.com/user-attachments/assets/ae26e5b8-e623-4286-a76d-5ad52670444a)
+![Gimbal configuration](https://github.com/user-attachments/assets/ae26e5b8-e623-4286-a76d-5ad52670444a)
 
 (Left is current URDF configuration, right is what gimbal_ik_copterlab_v2 follows)
 
@@ -71,6 +71,8 @@ Mentors are amazing and are always happy to help even if it seems like they are 
 
 Don’t worry too much about the paper/actual REU part of it. 
 ### Outside the lab
+If you get sick for a few weeks (like I was) you may be allergic to sagebrush. Take a claritin. You also may be having a bad reaction to the water, try bottled for a few days.
+
 Admin issues. Payments get delayed a lot: bug them often. 
 
 Usually we get an airbnb in the last week because summer housing closes after the first week of August. 
