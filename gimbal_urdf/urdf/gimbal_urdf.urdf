@@ -274,309 +274,83 @@
     <axis
       xyz="0 0 0" />
   </joint>
-</robot>
+
+  <link
+    name="rcam_link">
+    <inertial>
+      <origin
+        xyz="-0.00970850334324157 0.00697927622075006 -8.53198841354597E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0801973434031241" />
+      <inertia
+        ixx="1.56708328301031E-05"
+        ixy="-4.55735429472692E-08"
+        ixz="7.86544519354351E-08"
+        iyy="2.13344670006746E-05"
+        iyz="-8.15507701985039E-08"
+        izz="2.06349478725068E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.02 0.02 0.02" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.02 0.02 0.02" />
+      </geometry>
+    </collision>
+  </link>
+
+<joint
+    name="rcam_to_EE"
+    type="fixed">
+    <origin
+      xyz="-0.045 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="EE" />
+    <child
+      link="rcam_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
 
 
-  <!-- <link
-    name="base_link">
-    <inertial>
-      <origin
-        xyz="-9.36978428809319E-07 4.57605877599437E-05 -0.0159368690056622"
-        rpy="0 0 0" />
-      <mass
-        value="0.0910904317842352" />
-      <inertia
-        ixx="5.70945310228178E-05"
-        ixy="-2.42380441346544E-07"
-        ixz="6.81766558006317E-10"
-        iyy="5.70921715553873E-05"
-        iyz="-3.30852740372137E-08"
-        izz="9.12439770704331E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/base_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/base_link.STL" />
-      </geometry>
-    </collision>
-  </link>
   <link
-    name="1st_link">
+    name="lcam_link">
     <inertial>
       <origin
-        xyz="0.000612488321303465 -0.0286309763596522 -0.0593185429425767"
+        xyz="-0.00970850334324157 0.00697927622075006 -8.53198841354597E-05"
         rpy="0 0 0" />
       <mass
-        value="0.107060959532123" />
+        value="0.0801973434031241" />
       <inertia
-        ixx="0.000196934846832271"
-        ixy="2.49656534789462E-07"
-        ixz="1.09695973889776E-06"
-        iyy="0.000185088095559958"
-        iyz="-5.16833616745353E-05"
-        izz="7.00531346600684E-05" />
+        ixx="1.56708328301031E-05"
+        ixy="-4.55735429472692E-08"
+        ixz="7.86544519354351E-08"
+        iyy="2.13344670006746E-05"
+        iyz="-8.15507701985039E-08"
+        izz="2.06349478725068E-05" />
     </inertial>
     <visual>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/1st_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/1st_link.STL" />
-      </geometry>
-    </collision><link
-    name="base_link">
-    <inertial>
-      <origin
-        xyz="-9.36978428809319E-07 4.57605877599437E-05 -0.0159368690056622"
-        rpy="0 0 0" />
-      <mass
-        value="0.0910904317842352" />
-      <inertia
-        ixx="5.70945310228178E-05"
-        ixy="-2.42380441346544E-07"
-        ixz="6.81766558006317E-10"
-        iyy="5.70921715553873E-05"
-        iyz="-3.30852740372137E-08"
-        izz="9.12439770704331E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/base_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/base_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <link
-    name="1st_link">
-    <inertial>
-      <origin
-        xyz="0.000612488321303465 -0.0286309763596522 -0.0593185429425767"
-        rpy="0 0 0" />
-      <mass
-        value="0.107060959532123" />
-      <inertia
-        ixx="0.000196934846832271"
-        ixy="2.49656534789462E-07"
-        ixz="1.09695973889776E-06"
-        iyy="0.000185088095559958"
-        iyz="-5.16833616745353E-05"
-        izz="7.00531346600684E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/1st_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/1st_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="1st_to_base"
-    type="continuous">
-    <origin
-      xyz="0 0 -0.033"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="1st_link" />
-    <axis
-      xyz="0 0 -1" />
-  </joint>
-  <link
-    name="2nd_link">
-    <inertial>
-      <origin
-        xyz="0.0200048867849182 0.00682569373157814 -9.79714342791982E-05"
-        rpy="0 0 0" />
-      <mass
-        value="0.0983165735824386" />
-      <inertia
-        ixx="0.000109833495785838"
-        ixy="-4.74753089760284E-05"
-        ixz="1.40913227501525E-07"
-        iyy="5.2834005164931E-05"
-        iyz="2.39439248377496E-07"
-        izz="0.000137821393836787" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/2nd_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/2nd_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="2nd_to_1st"
-    type="continuous">
-    <origin
-      xyz="0 0 -0.1105"
-      rpy="0 0 0" />
-    <parent
-      link="1st_link" />
-    <child
-      link="2nd_link" />
-    <axis
-      xyz="0.78932 0.61399 0" />
-  </joint>
-  <link
-    name="3rd_link">
-    <inertial>
-      <origin
-        xyz="-0.00224916366807434 0.0167440584457143 0.00529287791667063"
-        rpy="0 0 0" />
-      <mass
-        value="0.0721429178544638" />
-      <inertia
-        ixx="2.68068164436303E-05"
-        ixy="-1.21949422807232E-06"
-        ixz="-3.46670792289605E-06"
-        iyy="9.30304560954603E-05"
-        iyz="5.4524939930533E-07"
-        izz="8.05235035924078E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/3rd_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/3rd_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="3rd_to_2nd"
-    type="continuous">
-    <origin
-      xyz="0.033408 0.025987 0"
-      rpy="0 0 0" />
-    <parent
-      link="2nd_link" />
-    <child
-      link="3rd_link" />
-    <axis
-      xyz="-0.61251 0.78742 0.069261" />
-  </joint>
-  <link
-    name="4th_link">
-    <inertial>
-      <origin
-        xyz="-0.00970105993345179 0.00668865099007726 0.000170315879815891"
-        rpy="0 0 0" />
-      <mass
-        value="0.0801973432614715" />
-      <inertia
-        ixx="1.56710601472381E-05"
-        ixy="-4.97440459544232E-08"
-        ixz="8.30838489721852E-08"
-        iyy="2.13428410489528E-05"
-        iyz="-2.72249716283926E-08"
-        izz="2.0626344693533E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/4th_link.STL" />
+        <box size="0.02 0.02 0.02" />
       </geometry>
       <material
         name="">
@@ -589,448 +363,24 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/4th_link.STL" />
+        <box size="0.02 0.02 0.02" />
       </geometry>
     </collision>
   </link>
-  <joint
-    name="lens_ee"
+
+<joint
+    name="lcam_to_EE"
     type="fixed">
     <origin
-      xyz="-0.017933 0.012977 0.0037216"
+      xyz="0.045 0 0"
       rpy="0 0 0" />
     <parent
-      link="3rd_link" />
+      link="EE" />
     <child
-      link="4th_link" />
+      link="lcam_link" />
     <axis
       xyz="0 0 0" />
   </joint>
+
+
 </robot>
-  </link>
-  <joint
-    name="1st_to_base"
-    type="continuous">
-    <origin
-      xyz="0 0 -0.033"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="1st_link" />
-    <axis
-      xyz="0 0 -1" />
-  </joint>
-  <link
-    name="2nd_link">
-    <inertial>
-      <origin
-        xyz="0.0200048867849182 0.00682569373157814 -9.79714342791982E-05"
-        rpy="0 0 0" />
-      <mass
-        value="0.0983165735824386" />
-      <inertia
-        ixx="0.000109833495785838"
-        ixy="-4.74753089760284E-05"
-        ixz="1.40913227501525E-07"
-        iyy="5.2834005164931E-05"
-        iyz="2.39439248377496E-07"
-        izz="0.000137821393836787" />
-    </inertial><link
-    name="base_link">
-    <inertial>
-      <origin
-        xyz="-9.36978428809319E-07 4.57605877599437E-05 -0.0159368690056622"
-        rpy="0 0 0" />
-      <mass
-        value="0.0910904317842352" />
-      <inertia
-        ixx="5.70945310228178E-05"
-        ixy="-2.42380441346544E-07"
-        ixz="6.81766558006317E-10"
-        iyy="5.70921715553873E-05"
-        iyz="-3.30852740372137E-08"
-        izz="9.12439770704331E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/base_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/base_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <link
-    name="1st_link">
-    <inertial>
-      <origin
-        xyz="0.000612488321303465 -0.0286309763596522 -0.0593185429425767"
-        rpy="0 0 0" />
-      <mass
-        value="0.107060959532123" />
-      <inertia
-        ixx="0.000196934846832271"
-        ixy="2.49656534789462E-07"
-        ixz="1.09695973889776E-06"
-        iyy="0.000185088095559958"
-        iyz="-5.16833616745353E-05"
-        izz="7.00531346600684E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/1st_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/1st_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="1st_to_base"
-    type="continuous">
-    <origin
-      xyz="0 0 -0.033"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="1st_link" />
-    <axis
-      xyz="0 0 -1" />
-  </joint>
-  <link
-    name="2nd_link">
-    <inertial>
-      <origin
-        xyz="0.0200048867849182 0.00682569373157814 -9.79714342791982E-05"
-        rpy="0 0 0" />
-      <mass
-        value="0.0983165735824386" />
-      <inertia
-        ixx="0.000109833495785838"
-        ixy="-4.74753089760284E-05"
-        ixz="1.40913227501525E-07"
-        iyy="5.2834005164931E-05"
-        iyz="2.39439248377496E-07"
-        izz="0.000137821393836787" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/2nd_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/2nd_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="2nd_to_1st"
-    type="continuous">
-    <origin
-      xyz="0 0 -0.1105"
-      rpy="0 0 0" />
-    <parent
-      link="1st_link" />
-    <child
-      link="2nd_link" />
-    <axis
-      xyz="0.78932 0.61399 0" />
-  </joint>
-  <link
-    name="3rd_link">
-    <inertial>
-      <origin
-        xyz="-0.00224916366807434 0.0167440584457143 0.00529287791667063"
-        rpy="0 0 0" />
-      <mass
-        value="0.0721429178544638" />
-      <inertia
-        ixx="2.68068164436303E-05"
-        ixy="-1.21949422807232E-06"
-        ixz="-3.46670792289605E-06"
-        iyy="9.30304560954603E-05"
-        iyz="5.4524939930533E-07"
-        izz="8.05235035924078E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/3rd_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/3rd_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="3rd_to_2nd"
-    type="continuous">
-    <origin
-      xyz="0.033408 0.025987 0"
-      rpy="0 0 0" />
-    <parent
-      link="2nd_link" />
-    <child
-      link="3rd_link" />
-    <axis
-      xyz="-0.61251 0.78742 0.069261" />
-  </joint>
-  <link
-    name="4th_link">
-    <inertial>
-      <origin
-        xyz="-0.00970105993345179 0.00668865099007726 0.000170315879815891"
-        rpy="0 0 0" />
-      <mass
-        value="0.0801973432614715" />
-      <inertia
-        ixx="1.56710601472381E-05"
-        ixy="-4.97440459544232E-08"
-        ixz="8.30838489721852E-08"
-        iyy="2.13428410489528E-05"
-        iyz="-2.72249716283926E-08"
-        izz="2.0626344693533E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/4th_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/4th_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="lens_ee"
-    type="fixed">
-    <origin
-      xyz="-0.017933 0.012977 0.0037216"
-      rpy="0 0 0" />
-    <parent
-      link="3rd_link" />
-    <child
-      link="4th_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-</robot>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/2nd_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/2nd_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="2nd_to_1st"
-    type="continuous">
-    <origin
-      xyz="0 0 -0.1105"
-      rpy="0 0 0" />
-    <parent
-      link="1st_link" />
-    <child
-      link="2nd_link" />
-    <axis
-      xyz="0.78932 0.61399 0" />
-  </joint>
-  <link
-    name="3rd_link">
-    <inertial>
-      <origin
-        xyz="-0.00224916366807434 0.0167440584457143 0.00529287791667063"
-        rpy="0 0 0" />
-      <mass
-        value="0.0721429178544638" />
-      <inertia
-        ixx="2.68068164436303E-05"
-        ixy="-1.21949422807232E-06"
-        ixz="-3.46670792289605E-06"
-        iyy="9.30304560954603E-05"
-        iyz="5.4524939930533E-07"
-        izz="8.05235035924078E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/3rd_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/3rd_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="3rd_to_2nd"
-    type="continuous">
-    <origin
-      xyz="0.033408 0.025987 0"
-      rpy="0 0 0" />
-    <parent
-      link="2nd_link" />
-    <child
-      link="3rd_link" />
-    <axis
-      xyz="-0.61251 0.78742 0.069261" />
-  </joint>
-  <link
-    name="4th_link">
-    <inertial>
-      <origin
-        xyz="-0.00970105993345179 0.00668865099007726 0.000170315879815891"
-        rpy="0 0 0" />
-      <mass
-        value="0.0801973432614715" />
-      <inertia
-        ixx="1.56710601472381E-05"
-        ixy="-4.97440459544232E-08"
-        ixz="8.30838489721852E-08"
-        iyy="2.13428410489528E-05"
-        iyz="-2.72249716283926E-08"
-        izz="2.0626344693533E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/4th_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://gimbal_urdf/meshes/4th_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="lens_ee"
-    type="fixed">
-    <origin
-      xyz="-0.017933 0.012977 0.0037216"
-      rpy="0 0 0" />
-    <parent
-      link="3rd_link" />
-    <child
-      link="4th_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-</robot> -->
