@@ -63,6 +63,18 @@ Please message me with any questions on what I did or with any updates of the pr
 ## Bonus REU tips
 If you are an REU student working on this:
 ### In the lab: 
-There were a few weeks before I could even START helping out, it is normal to be stuck in tutorial hell for those few weeks. You don’t have to learn everything about ROS, just make sure to watch the videos in the roswiki. I was constantly wavering between feeling like I knew what I was doing and feeling completely lost throughout the REU, even in the last week. Imposter syndrome is real. Mentors are amazing and are always happy to help even if it seems like they are busy, so don’t feel like a burden to ask questions (They’re paid to help you). Try to learn everything about everything, and don’t worry too much about the paper/actual REU part of it. || 
+There were a few weeks before I could even START helping out, it is normal to be stuck in tutorial hell for those few weeks. You don’t have to learn everything about ROS, just make sure to watch the videos in the roswiki. 
+
+I was constantly wavering between feeling like I knew what I was doing and feeling completely lost throughout the REU, even in the last week, so don't worry about it.
+
+Mentors are amazing and are always happy to help even if it seems like they are busy, so don’t feel like a burden to ask questions. They are also very smart and have a lot of experience, so try to learn as much as possible from them. 
+
+Don’t worry too much about the paper/actual REU part of it. 
 ### Outside the lab
-Admin issues. Late payment: bug them often. Usually we get an airbnb in the last week because summer housing closes after the first week of August. Make friends with everyone, it makes the experience so much better. Don’t get caught in downtown Reno past 10 pm.
+Admin issues. Payments get delayed a lot: bug them often. 
+
+Usually we get an airbnb in the last week because summer housing closes after the first week of August. 
+
+Make friends with everyone, it makes the experience so much better. 
+
+Don’t get caught in downtown Reno past 10 pm.
